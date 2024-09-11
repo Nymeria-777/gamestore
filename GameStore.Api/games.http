@@ -8,9 +8,9 @@ POST http://localhost:5029/games
 Content-Type:  application/json
 
 {
- "name": "Street Fighter iii",
-    "genreId": 1,
-    "price": 29.99,
+ "name": "final fantasy iii",
+    "genreId": 2,
+    "price": 39.99,
     "releaseDate": "1992-07-15"
 }
 
