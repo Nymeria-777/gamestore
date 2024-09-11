@@ -8,10 +8,10 @@ POST http://localhost:5029/games
 Content-Type:  application/json
 
 {
-    //"name": "Minecraf",
-    "genre": "Kids",
-    "price": 9.99,
-    "releaseDate": "2011-11-18"
+ "name": "Street Fighter iii",
+    "genreId": 1,
+    "price": 29.99,
+    "releaseDate": "1992-07-15"
 }
 
 ###
