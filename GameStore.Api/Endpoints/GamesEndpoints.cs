@@ -9,7 +9,7 @@ namespace GameStore.Api.Endpoints;
 public static class GamesEndpoints
 {
 const string GetGameEndpointName = "GetGame";
-private static readonly List<GameDto> games =[
+private static readonly List<GameSummaryDto> games =[
     new(
         1,
         "Street Fighter",
@@ -41,7 +41,7 @@ group.MapGet("/", () => games);
     group.MapGet ("/{id}", (int id, GameStoreContext  dbContext) =>
     {
         Game?  game= dbContext.Games.Find(id);
-        return game is null ? Results.NotFound() :Results.Ok(game);
+        return game is null ? Results.NotFound() :Results.Ok(game.ToGameDetailsDto());
     })
     .WithName(GetGameEndpointName);
     
@@ -57,24 +57,26 @@ group.MapPost("/", (CreateGameDto newGame, GameStoreContext dbContext) =>
     dbContext.SaveChanges();
 
    
-    return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id}, game.ToDto());
-});
+    return Results.CreatedAtRoute(
+        GetGameEndpointName, 
+        new { id = game.Id}, 
+        game.ToGameDetailsDto());
+}); 
 
 // PUT/games
-group.MapPut("/{id}", (int id, UpdateGameDto updatedGame) =>
+group.MapPut("/{id}", (int id, UpdateGameDto updatedGame, GameStoreContext dbContext) =>
 {
-    var index = games.FindIndex(game => game.Id == id);
-    if (index== -1)
+    // var index = games.FindIndex(game => game.Id == id);
+    var existingGame =dbContext.Games.Find(id);
+    if (existingGame is null)
     {
         return Results.NotFound();
     }
-    games[index] =new GameDto( 
-        id,
-        updatedGame.Name,
-        updatedGame.Genre,
-        updatedGame.Price,
-        updatedGame.ReleaseDate
-    );
+   dbContext.Entry(existingGame)
+                    .CurrentValues
+                    .SetValues(updatedGame.ToEntity(id));
+
+    dbContext.SaveChanges();                
     return Results.NoContent(); 
 });
 

@@ -1,7 +1,7 @@
 GET http://localhost:5029/games
 
 ###
-GET http://localhost:5029/games/5
+GET http://localhost:5029/games/3
 
 ###
 POST http://localhost:5029/games
@@ -15,14 +15,14 @@ Content-Type:  application/json
 }
 
 ###
-PUT  http://localhost:5029/games/1
+PUT  http://localhost:5029/games/3
 Content-Type:  application/json
 
  {
     
-    "name": "Street Fighter iii",
-    "genre": "Fighting",
-    "price": 29.99,
+    "name": "Street Fighter iii turbo",
+    "genreId": 1,
+    "price": 19.99,
     "releaseDate": "1992-07-15"
   }
 
